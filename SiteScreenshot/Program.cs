@@ -23,6 +23,9 @@ namespace SiteScreenshot
         
         }
 
+        /// <summary>
+        /// Show help
+        /// </summary>
         static void ShowInfo()
         {
             Console.WriteLine("Params format: ");
@@ -32,6 +35,14 @@ namespace SiteScreenshot
             Console.WriteLine("  SiteScreenshot http://www.sitename.com/page.html 1280 ./image.jpg");
         }
 
+        /// <summary>
+        /// Create a site screenshot
+        /// </summary>
+        /// <param name="Url">page address</param>
+        /// <param name="sWidth">Screenshot width</param>
+        /// <param name="sHeight">Screenshot height</param>
+        /// <param name="Limit">Don't use sHeight if false</param>
+        /// <param name="FileName">File name to save to</param>
         static void CreateSiteScreenshot(string Url, string sWidth, string sHeight, bool Limit, string FileName)
         {
             int Width=0, Height=0;
@@ -41,7 +52,6 @@ namespace SiteScreenshot
             string outfilename = 
                 Environment.ExpandEnvironmentVariables(
                     Path.GetFullPath(FileName)); ;
-
 
             SiteThmb thmb = new SiteThmb(Url, outfilename, Width, Height);
             thmb.LimitHeight = Limit;

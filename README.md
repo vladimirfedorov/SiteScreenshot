@@ -1,2 +1,2 @@
-Site screenshoter
-=================
+Site screenshotter
+==================

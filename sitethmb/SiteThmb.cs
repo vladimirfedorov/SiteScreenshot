@@ -21,8 +21,14 @@ namespace sitethmb
         /// </summary>
         public Size SiteImageSize;
 
+        /// <summary>
+        /// Site screenshot has limited height if set
+        /// </summary>
         public bool LimitHeight = true;
 
+        /// <summary>
+        /// Site image
+        /// </summary>
         public Image SiteImage;
 
         /// <summary>
@@ -43,9 +49,11 @@ namespace sitethmb
             this.SiteImageSize = new Size(Width, Height);
         }
 
+
         private void wb_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             WebBrowser browser = (WebBrowser)sender;
+            // DocumentCombleted is triggered with different statuses, wait for "Complete"
             if (browser.ReadyState != WebBrowserReadyState.Complete) return;
 
             if (!LimitHeight) browser.Height = browser.Document.Body.ScrollRectangle.Height;
@@ -54,13 +62,12 @@ namespace sitethmb
                 browser.Width, 
                 LimitHeight ? browser.Height : browser.Document.Body.ScrollRectangle.Height, 
                 graphics))
-            //using (Bitmap bitmap = new Bitmap(browser.Width, browser.Height, graphics))
-                {
-                    Rectangle bounds = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                    browser.DrawToBitmap(bitmap, bounds);
-                    this.SiteImage = bitmap;
-                    bitmap.Save(this.FileName, ImageFormat.Jpeg);
-               }
+            {
+                Rectangle bounds = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                browser.DrawToBitmap(bitmap, bounds);
+                this.SiteImage = bitmap;
+                bitmap.Save(this.FileName, ImageFormat.Jpeg);
+            }
         }
 
         /// <summary>
@@ -84,6 +91,7 @@ namespace sitethmb
 
             WebBrowser wb = new WebBrowser();
             wb.Size = this.SiteImageSize;
+            // wait until page is ready
             wb.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(wb_DocumentCompleted);
             wb.ScrollBarsEnabled = true;
 
